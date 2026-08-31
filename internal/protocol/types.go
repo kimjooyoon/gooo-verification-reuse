@@ -171,37 +171,37 @@ type Authority struct {
 }
 
 type Provenance struct {
-	AppendOnly               bool     `json:"append_only"`
-	ResetDeleteRewrite       bool     `json:"reset_delete_rewrite"`
-	FailedAttempts           []string `json:"failed_attempts"`
-	OptionalExternalInputs   []string `json:"optional_external_inputs"`
-	DirectMainCommitCount    int      `json:"direct_main_commit_count"`
-	DirectMainCommitSHA      string   `json:"direct_main_commit_sha"`
-	DirectMainCommitPaths    []string `json:"direct_main_commit_paths"`
+	AppendOnly             bool     `json:"append_only"`
+	ResetDeleteRewrite     bool     `json:"reset_delete_rewrite"`
+	FailedAttempts         []string `json:"failed_attempts"`
+	OptionalExternalInputs []string `json:"optional_external_inputs"`
+	DirectMainCommitCount  int      `json:"direct_main_commit_count"`
+	DirectMainCommitSHA    string   `json:"direct_main_commit_sha"`
+	DirectMainCommitPaths  []string `json:"direct_main_commit_paths"`
 }
 
 type Receipt struct {
-	SubjectSHA              string           `json:"subject_sha"`
-	Schema                  string           `json:"schema"`
-	Protocol                string           `json:"protocol"`
-	Scenario                string           `json:"scenario"`
-	Decision                Decision         `json:"decision"`
-	Claim                   Claim            `json:"claim"`
-	Source                  SourceIdentity   `json:"source"`
-	SemanticIR              ArtifactIdentity `json:"semantic_ir"`
-	GeneratedEvaluator      ArtifactIdentity `json:"generated_evaluator"`
-	ContractDigest          string           `json:"contract_digest"`
-	FixtureCorpusDigest     string           `json:"fixture_corpus_digest"`
-	CurrentBindings         BindingSet       `json:"current_bindings"`
-	PriorBindings           BindingSet       `json:"prior_bindings"`
-	CacheHit                bool             `json:"cache_hit"`
-	Reuse                   ReuseReport      `json:"reuse"`
-	Operations              []Operation      `json:"operations"`
-	ExecutionCounts         ExecutionCounts  `json:"execution_counts"`
-	Summary                 Summary          `json:"summary"`
-	Cells                   []CellDecision   `json:"cells"`
-	Inventory               Inventory        `json:"inventory"`
-	Authority               Authority        `json:"authority"`
+	SubjectSHA            string           `json:"subject_sha"`
+	Schema                string           `json:"schema"`
+	Protocol              string           `json:"protocol"`
+	Scenario              string           `json:"scenario"`
+	Decision              Decision         `json:"decision"`
+	Claim                 Claim            `json:"claim"`
+	Source                SourceIdentity   `json:"source"`
+	SemanticIR            ArtifactIdentity `json:"semantic_ir"`
+	GeneratedEvaluator    ArtifactIdentity `json:"generated_evaluator"`
+	ContractDigest        string           `json:"contract_digest"`
+	FixtureCorpusDigest   string           `json:"fixture_corpus_digest"`
+	CurrentBindings       BindingSet       `json:"current_bindings"`
+	PriorBindings         BindingSet       `json:"prior_bindings"`
+	CacheHit              bool             `json:"cache_hit"`
+	Reuse                 ReuseReport      `json:"reuse"`
+	Operations            []Operation      `json:"operations"`
+	ExecutionCounts       ExecutionCounts  `json:"execution_counts"`
+	Summary               Summary          `json:"summary"`
+	Cells                 []CellDecision   `json:"cells"`
+	Inventory             Inventory        `json:"inventory"`
+	Authority             Authority        `json:"authority"`
 	ExternalReleaseInputs []string         `json:"external_release_inputs"`
 	DevelopmentProvenance Provenance       `json:"development_provenance"`
 }

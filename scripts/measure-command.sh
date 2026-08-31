@@ -15,7 +15,9 @@ shift 4
 time_output="${metrics}.time"
 mkdir -p "$(dirname "$metrics")" "$(dirname "$result_path")" "$(dirname "$log_path")"
 status=0
-if ! LC_ALL=C /usr/bin/time -f '%e %M' -o "$time_output" "$@" >"$log_path" 2>&1; then
+if LC_ALL=C /usr/bin/time -f '%e %M' -o "$time_output" "$@" >"$log_path" 2>&1; then
+  status=0
+else
   status=$?
 fi
 
