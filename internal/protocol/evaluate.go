@@ -42,15 +42,15 @@ func Evaluate(contract Contract, ir SemanticIR, scenario Scenario, sourceDigest,
 	receipt := Receipt{
 		Schema: "gooo/verification-reuse/verification-receipt/v1", Protocol: ir.Protocol, Scenario: scenario.ID,
 		Decision: topDecision, Claim: Claim{State: topDecision, Reason: topReason, Unknown: topUnknown},
-		Source: SourceIdentity{Path: ir.SourcePath, Digest: sourceDigest, TreeDigest: treeDigest},
-		SemanticIR: ArtifactIdentity{Path: "semantic-ir.json", Digest: ir.Digest},
+		Source:             SourceIdentity{Path: ir.SourcePath, Digest: sourceDigest, TreeDigest: treeDigest},
+		SemanticIR:         ArtifactIdentity{Path: "semantic-ir.json", Digest: ir.Digest},
 		GeneratedEvaluator: ArtifactIdentity{Path: "generated/evaluator.go", Digest: generatedDigest},
-		ContractDigest: contractDigest, FixtureCorpusDigest: fixtureDigest, CurrentBindings: current, PriorBindings: prior,
+		ContractDigest:     contractDigest, FixtureCorpusDigest: fixtureDigest, CurrentBindings: current, PriorBindings: prior,
 		CacheHit: scenario.CacheHit, Reuse: ReuseReport{
 			PlanStatus: planDecision.State, PlanReason: planDecision.Reason, Authorized: planDecision.State == Closed,
 			CacheHit: scenario.CacheHit, PlanOnly: scenario.PlanOnly, ActualReused: actualReused, ConsumerTestExecutions: 0,
 		}, Operations: operations, ExecutionCounts: counts, Summary: summary, Cells: decisions, Inventory: inventory,
-		Authority: Authority{RepositoryWrites: 0, LocalTestExecutions: 0, CrossProjectRequiredGates: 0, OutputLocation: "CALLER_OWNED_TEMP_ONLY", VerificationAuthority: "GITHUB_ACTIONS"},
+		Authority:             Authority{RepositoryWrites: 0, LocalTestExecutions: 0, CrossProjectRequiredGates: 0, OutputLocation: "CALLER_OWNED_TEMP_ONLY", VerificationAuthority: "GITHUB_ACTIONS"},
 		ExternalReleaseInputs: []string{}, DevelopmentProvenance: Provenance{AppendOnly: true, ResetDeleteRewrite: false, FailedAttempts: []string{}, OptionalExternalInputs: []string{}},
 	}
 	return receipt, nil
