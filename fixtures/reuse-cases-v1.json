@@ -1,0 +1,97 @@
+{
+  "schema": "gooo/verification-reuse/fixture-corpus/v1",
+  "corpus_id": "verification-reuse-counterexamples-v1",
+  "cases": [
+    {
+      "id": "valid-reuse-plan",
+      "description": "All explicit bindings match and the prior terminal result passed; the first release emits a plan and still runs verification.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "$SOURCE_DIGEST", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "$POLICY_DIGEST", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "SKIPPED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "cache-hit-only",
+      "description": "A cache hit without any binding is not proof and leaves a minimal UNKNOWN frontier.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "", "tree_digest": "", "generated_artifact_digest": "", "go_toolchain_identity": "", "command_semantics": "", "dependency_inputs": "", "fixture_corpus_identity": "", "policy_identity": "", "platform_clock_domain": "", "prior_terminal_result": ""},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "source-tree-mismatch",
+      "description": "A cache hit with a known source digest mismatch is REFUTED.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "sha256:known-stale-source", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "$POLICY_DIGEST", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "negative-executed-duration",
+      "description": "A negative duration on an executed operation is REFUTED and is never normalized to zero.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "$SOURCE_DIGEST", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "$POLICY_DIGEST", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": -1, "peak_rss_kib": 1, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "failed-prior-result",
+      "description": "A known failed prior terminal result is REFUTED even when all identity bindings match.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "FAIL",
+      "prior_bindings": {"source_digest": "$SOURCE_DIGEST", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "$POLICY_DIGEST", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "policy-conflict",
+      "description": "A known policy identity mismatch is REFUTED; policy cannot be inferred from a cache hit.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "$SOURCE_DIGEST", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "sha256:known-old-policy", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    },
+    {
+      "id": "mismatch-over-missing",
+      "description": "REFUTED source evidence takes precedence while an independent missing policy binding remains visible as UNKNOWN.",
+      "cache_hit": true,
+      "plan_only": true,
+      "prior_terminal_result": "PASS",
+      "prior_bindings": {"source_digest": "sha256:known-stale-source", "tree_digest": "$TREE_DIGEST", "generated_artifact_digest": "$GENERATED_ARTIFACT_DIGEST", "go_toolchain_identity": "$GO_TOOLCHAIN", "command_semantics": "$COMMAND_SEMANTICS", "dependency_inputs": "$DEPENDENCY_INPUTS", "fixture_corpus_identity": "$FIXTURE_DIGEST", "policy_identity": "", "platform_clock_domain": "$PLATFORM_CLOCK", "prior_terminal_result": "$PRIOR_RESULT"},
+      "operations": [
+        {"operation_id": "build", "stage": "BUILD", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$BUILD_RESULT"},
+        {"operation_id": "test", "stage": "TEST", "status": "EXECUTED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": "$TEST_RESULT"},
+        {"operation_id": "reuse-plan", "stage": "REUSE", "status": "NOT_OBSERVED", "wall_ms": null, "peak_rss_kib": null, "clock_domain": "$CLOCK_DOMAIN", "result_digest": ""}
+      ]
+    }
+  ]
+}
