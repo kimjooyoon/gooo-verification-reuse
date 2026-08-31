@@ -47,5 +47,6 @@ jq -S -n \
   > "$metrics"
 
 if [ "$status" -ne 0 ]; then
+  cat "$log_path" >&2
   exit "$status"
 fi
