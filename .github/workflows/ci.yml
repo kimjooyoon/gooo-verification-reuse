@@ -1,0 +1,95 @@
+name: Verification reuse conformance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verification-reuse-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    env:
+      SUBJECT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Checkout subject
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.SUBJECT_SHA }}
+          fetch-depth: 0
+
+      - name: Install Go 1.27
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.27.0
+          cache: false
+
+      - name: Verify toolchain identity
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(go env GOVERSION)" = "go1.27.0"
+          test "$(go env GOOS)" = "linux"
+          test "$(go env GOARCH)" = "amd64"
+
+      - name: Verify formatting
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          files=$(gofmt -l $(git ls-files '*.go'))
+          test -z "$files"
+
+      - name: Verify repository policy files
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(jq -r '.target_cells' contracts/verification-reuse-denominator-v1.json)" = "12"
+          test "$(git ls-files 'README.md' | wc -l | tr -d ' ')" = "1"
+
+      - name: Measure build in CI
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/gooo-verification-reuse"
+          mkdir -p "$root"
+          scripts/measure-command.sh "$root/build-observation.json" "$root/gooo-verification-reuse" "$root/build.log" "build-${GITHUB_RUN_ID}" \
+            go build -trimpath -o "$root/gooo-verification-reuse" ./cmd/gooo-verification-reuse
+
+      - name: Vet in CI
+        run: go vet ./...
+
+      - name: Measure test in CI
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/gooo-verification-reuse"
+          scripts/measure-command.sh "$root/test-observation.json" "$root/test-results.json" "$root/test.log" "test-${GITHUB_RUN_ID}" \
+            go test -json ./...
+
+      - name: Evaluate source to IR to generated evaluator to receipts
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          root="$RUNNER_TEMP/gooo-verification-reuse"
+          scripts/ci-conformance.sh "$GITHUB_WORKSPACE" "$root/gooo-verification-reuse" "$SUBJECT_SHA" "$root/cases" "$root/build-observation.json" "$root/test-observation.json"
+          cat "$root/cases/ci-summary.json" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload machine receipts and reports
+        id: evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gooo-verification-reuse-evidence-${{ github.run_id }}
+          path: ${{ runner.temp }}/gooo-verification-reuse/cases
+          if-no-files-found: error
+
+      - name: Record artifact identity
+        run: |
+          echo "artifact_id=${{ steps.evidence.outputs.artifact-id }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "artifact_digest=${{ steps.evidence.outputs.artifact-digest }}" >> "$GITHUB_STEP_SUMMARY"

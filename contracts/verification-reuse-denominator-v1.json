@@ -1,0 +1,31 @@
+{
+  "schema": "gooo/verification-reuse/denominator/v1",
+  "id": "gooo://denominator/verification-reuse/v1",
+  "target_cells": 12,
+  "precedence": ["REFUTED", "UNKNOWN", "CLOSED"],
+  "unknown_fields": ["stage", "step", "reason", "unknown_class", "next_operation", "blocked_by"],
+  "proof_totals": [
+    {"proof_choice": "FOUNDATION", "total": 4},
+    {"proof_choice": "COHERENCE", "total": 4},
+    {"proof_choice": "REGRESSION", "total": 4}
+  ],
+  "indicator_totals": [
+    {"indicator_class": "DRIVER", "total": 4},
+    {"indicator_class": "OUTCOME", "total": 4},
+    {"indicator_class": "GUARDRAIL", "total": 4}
+  ],
+  "cells": [
+    {"ordinal": 1, "id": "SOURCE_TREE_BINDING", "activity": "BindSourceAndTreeIdentity", "stage": "BINDING", "step": "COMPARE_SOURCE_AND_TREE_DIGESTS", "proof_choice": "FOUNDATION", "indicator_class": "DRIVER", "closed_reason": "SOURCE_AND_TREE_IDENTITY_BOUND", "depends_on": []},
+    {"ordinal": 2, "id": "GENERATED_ARTIFACT_BINDING", "activity": "BindGeneratedArtifactIdentity", "stage": "BINDING", "step": "COMPARE_GENERATED_ARTIFACT_DIGEST", "proof_choice": "FOUNDATION", "indicator_class": "DRIVER", "closed_reason": "GENERATED_ARTIFACT_IDENTITY_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 3, "id": "TOOLCHAIN_BINDING", "activity": "BindGoToolchainIdentity", "stage": "BINDING", "step": "COMPARE_GO_TOOLCHAIN_IDENTITY", "proof_choice": "FOUNDATION", "indicator_class": "DRIVER", "closed_reason": "GO_TOOLCHAIN_IDENTITY_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 4, "id": "COMMAND_BINDING", "activity": "BindCommandSemantics", "stage": "BINDING", "step": "COMPARE_COMMAND_SEMANTICS", "proof_choice": "FOUNDATION", "indicator_class": "OUTCOME", "closed_reason": "COMMAND_SEMANTICS_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 5, "id": "DEPENDENCY_BINDING", "activity": "BindDependencyInputs", "stage": "BINDING", "step": "COMPARE_DEPENDENCY_INPUTS", "proof_choice": "COHERENCE", "indicator_class": "OUTCOME", "closed_reason": "DEPENDENCY_INPUTS_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 6, "id": "FIXTURE_BINDING", "activity": "BindFixtureCorpusIdentity", "stage": "BINDING", "step": "COMPARE_FIXTURE_CORPUS_IDENTITY", "proof_choice": "COHERENCE", "indicator_class": "DRIVER", "closed_reason": "FIXTURE_CORPUS_IDENTITY_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 7, "id": "POLICY_BINDING", "activity": "BindPolicyIdentity", "stage": "BINDING", "step": "COMPARE_POLICY_IDENTITY", "proof_choice": "COHERENCE", "indicator_class": "GUARDRAIL", "closed_reason": "POLICY_IDENTITY_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 8, "id": "PLATFORM_CLOCK_BINDING", "activity": "BindPlatformClockDomain", "stage": "BINDING", "step": "COMPARE_PLATFORM_CLOCK_DOMAIN", "proof_choice": "COHERENCE", "indicator_class": "GUARDRAIL", "closed_reason": "PLATFORM_CLOCK_DOMAIN_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 9, "id": "PRIOR_RESULT_BINDING", "activity": "BindPriorTerminalResult", "stage": "BINDING", "step": "VALIDATE_PRIOR_TERMINAL_RESULT", "proof_choice": "REGRESSION", "indicator_class": "GUARDRAIL", "closed_reason": "PRIOR_TERMINAL_RESULT_BOUND", "depends_on": ["SOURCE_TREE_BINDING"]},
+    {"ordinal": 10, "id": "REUSE_PLAN", "activity": "AuthorizeEvidenceReusePlan", "stage": "REUSE", "step": "AUTHORIZE_EXACT_EVIDENCE_REUSE_PLAN", "proof_choice": "REGRESSION", "indicator_class": "OUTCOME", "closed_reason": "EXACT_EVIDENCE_REUSE_PLAN_AUTHORIZED", "depends_on": ["GENERATED_ARTIFACT_BINDING", "TOOLCHAIN_BINDING", "COMMAND_BINDING", "DEPENDENCY_BINDING", "FIXTURE_BINDING", "POLICY_BINDING", "PLATFORM_CLOCK_BINDING", "PRIOR_RESULT_BINDING"]},
+    {"ordinal": 11, "id": "OPERATION_ACCOUNTING", "activity": "AccountVerificationOperations", "stage": "OBSERVATION", "step": "ACCOUNT_EXECUTED_REUSED_SKIPPED_NOT_OBSERVED", "proof_choice": "REGRESSION", "indicator_class": "OUTCOME", "closed_reason": "OPERATION_ACCOUNTING_EXACT", "depends_on": ["REUSE_PLAN"]},
+    {"ordinal": 12, "id": "HUMAN_REPORT", "activity": "PublishHumanVerificationReport", "stage": "REPORT", "step": "PUBLISH_MACHINE_RECEIPT_AND_HUMAN_REPORT", "proof_choice": "REGRESSION", "indicator_class": "GUARDRAIL", "closed_reason": "MACHINE_RECEIPT_AND_HUMAN_REPORT_PUBLISHED", "depends_on": ["OPERATION_ACCOUNTING"]}
+  ]
+}
