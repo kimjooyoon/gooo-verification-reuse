@@ -11,18 +11,18 @@ const (
 )
 
 type Unknown struct {
-	Stage        string   `json:"stage"`
-	Step         string   `json:"step"`
-	Reason       string   `json:"reason"`
-	UnknownClass string   `json:"unknown_class"`
+	Stage         string   `json:"stage"`
+	Step          string   `json:"step"`
+	Reason        string   `json:"reason"`
+	UnknownClass  string   `json:"unknown_class"`
 	NextOperation string   `json:"next_operation"`
-	BlockedBy    []string `json:"blocked_by"`
+	BlockedBy     []string `json:"blocked_by"`
 }
 
 type Claim struct {
-	State        Decision `json:"state"`
-	Reason       string   `json:"reason"`
-	Unknown      *Unknown `json:"unknown,omitempty"`
+	State   Decision `json:"state"`
+	Reason  string   `json:"reason"`
+	Unknown *Unknown `json:"unknown,omitempty"`
 }
 
 type Cell struct {
@@ -38,14 +38,14 @@ type Cell struct {
 }
 
 type Contract struct {
-	Schema         string       `json:"schema"`
-	ID             string       `json:"id"`
-	TargetCells    int          `json:"target_cells"`
-	Precedence     []string     `json:"precedence"`
-	UnknownFields  []string     `json:"unknown_fields"`
-	ProofTotals    []Total      `json:"proof_totals"`
-	IndicatorTotals []Total     `json:"indicator_totals"`
-	Cells          []Cell       `json:"cells"`
+	Schema          string   `json:"schema"`
+	ID              string   `json:"id"`
+	TargetCells     int      `json:"target_cells"`
+	Precedence      []string `json:"precedence"`
+	UnknownFields   []string `json:"unknown_fields"`
+	ProofTotals     []Total  `json:"proof_totals"`
+	IndicatorTotals []Total  `json:"indicator_totals"`
+	Cells           []Cell   `json:"cells"`
 }
 
 type Total struct {
@@ -70,16 +70,16 @@ type SemanticIR struct {
 }
 
 type BindingSet struct {
-	SourceDigest             string `json:"source_digest"`
-	TreeDigest               string `json:"tree_digest"`
-	GeneratedArtifactDigest  string `json:"generated_artifact_digest"`
-	GoToolchainIdentity      string `json:"go_toolchain_identity"`
-	CommandSemantics         string `json:"command_semantics"`
-	DependencyInputs         string `json:"dependency_inputs"`
-	FixtureCorpusIdentity    string `json:"fixture_corpus_identity"`
-	PolicyIdentity           string `json:"policy_identity"`
-	PlatformClockDomain      string `json:"platform_clock_domain"`
-	PriorTerminalResult      string `json:"prior_terminal_result"`
+	SourceDigest            string `json:"source_digest"`
+	TreeDigest              string `json:"tree_digest"`
+	GeneratedArtifactDigest string `json:"generated_artifact_digest"`
+	GoToolchainIdentity     string `json:"go_toolchain_identity"`
+	CommandSemantics        string `json:"command_semantics"`
+	DependencyInputs        string `json:"dependency_inputs"`
+	FixtureCorpusIdentity   string `json:"fixture_corpus_identity"`
+	PolicyIdentity          string `json:"policy_identity"`
+	PlatformClockDomain     string `json:"platform_clock_domain"`
+	PriorTerminalResult     string `json:"prior_terminal_result"`
 }
 
 type FixtureCorpus struct {
@@ -89,13 +89,13 @@ type FixtureCorpus struct {
 }
 
 type Scenario struct {
-	ID                  string       `json:"id"`
-	Description         string       `json:"description"`
-	CacheHit            bool         `json:"cache_hit"`
-	PlanOnly            bool         `json:"plan_only"`
-	PriorTerminalResult string       `json:"prior_terminal_result"`
-	PriorBindings       BindingSet   `json:"prior_bindings"`
-	Operations          []Operation  `json:"operations"`
+	ID                  string      `json:"id"`
+	Description         string      `json:"description"`
+	CacheHit            bool        `json:"cache_hit"`
+	PlanOnly            bool        `json:"plan_only"`
+	PriorTerminalResult string      `json:"prior_terminal_result"`
+	PriorBindings       BindingSet  `json:"prior_bindings"`
+	Operations          []Operation `json:"operations"`
 }
 
 type Operation struct {
@@ -110,22 +110,22 @@ type Operation struct {
 }
 
 type CommandObservation struct {
-	Status       string `json:"status"`
-	OperationID  string `json:"operation_id"`
-	WallMS       int64  `json:"wall_ms"`
-	PeakRSSKiB   int64  `json:"peak_rss_kib"`
-	ClockDomain  string `json:"clock_domain"`
-	ResultDigest string `json:"result_digest"`
+	Status         string `json:"status"`
+	OperationID    string `json:"operation_id"`
+	WallMS         int64  `json:"wall_ms"`
+	PeakRSSKiB     int64  `json:"peak_rss_kib"`
+	ClockDomain    string `json:"clock_domain"`
+	ResultDigest   string `json:"result_digest"`
 	TerminalResult string `json:"terminal_result"`
 }
 
 type CellDecision struct {
-	CellID       string   `json:"cell_id"`
-	Activity     string   `json:"activity"`
-	State        Decision `json:"state"`
-	Reason       string   `json:"reason"`
-	Unknown      *Unknown `json:"unknown,omitempty"`
-	BlockedBy    []string `json:"blocked_by"`
+	CellID    string   `json:"cell_id"`
+	Activity  string   `json:"activity"`
+	State     Decision `json:"state"`
+	Reason    string   `json:"reason"`
+	Unknown   *Unknown `json:"unknown,omitempty"`
+	BlockedBy []string `json:"blocked_by"`
 }
 
 type ExecutionCounts struct {
@@ -143,23 +143,23 @@ type Summary struct {
 }
 
 type Inventory struct {
-	TreeFileCount       int64 `json:"tree_file_count"`
-	TreeBytes           int64 `json:"tree_bytes"`
-	GoFiles             int64 `json:"go_files"`
-	GoLines             int64 `json:"go_lines"`
-	GoooFiles           int64 `json:"gooo_files"`
-	GoooLines           int64 `json:"gooo_lines"`
-	RootReadmeExcluded  bool  `json:"root_readme_excluded"`
+	TreeFileCount      int64 `json:"tree_file_count"`
+	TreeBytes          int64 `json:"tree_bytes"`
+	GoFiles            int64 `json:"go_files"`
+	GoLines            int64 `json:"go_lines"`
+	GoooFiles          int64 `json:"gooo_files"`
+	GoooLines          int64 `json:"gooo_lines"`
+	RootReadmeExcluded bool  `json:"root_readme_excluded"`
 }
 
 type ReuseReport struct {
-	PlanStatus               Decision `json:"plan_status"`
-	PlanReason               string   `json:"plan_reason"`
-	Authorized               bool     `json:"authorized"`
-	CacheHit                bool     `json:"cache_hit"`
-	PlanOnly                bool     `json:"plan_only"`
-	ActualReused            int      `json:"actual_reused"`
-	ConsumerTestExecutions  int      `json:"consumer_test_executions"`
+	PlanStatus             Decision `json:"plan_status"`
+	PlanReason             string   `json:"plan_reason"`
+	Authorized             bool     `json:"authorized"`
+	CacheHit               bool     `json:"cache_hit"`
+	PlanOnly               bool     `json:"plan_only"`
+	ActualReused           int      `json:"actual_reused"`
+	ConsumerTestExecutions int      `json:"consumer_test_executions"`
 }
 
 type Authority struct {
@@ -171,36 +171,36 @@ type Authority struct {
 }
 
 type Provenance struct {
-	AppendOnly                 bool     `json:"append_only"`
-	ResetDeleteRewrite         bool     `json:"reset_delete_rewrite"`
-	FailedAttempts             []string `json:"failed_attempts"`
-	OptionalExternalInputs     []string `json:"optional_external_inputs"`
+	AppendOnly             bool     `json:"append_only"`
+	ResetDeleteRewrite     bool     `json:"reset_delete_rewrite"`
+	FailedAttempts         []string `json:"failed_attempts"`
+	OptionalExternalInputs []string `json:"optional_external_inputs"`
 }
 
 type Receipt struct {
-	SubjectSHA          string             `json:"subject_sha"`
-	Schema              string             `json:"schema"`
-	Protocol            string             `json:"protocol"`
-	Scenario            string             `json:"scenario"`
-	Decision            Decision           `json:"decision"`
-	Claim               Claim              `json:"claim"`
-	Source              SourceIdentity     `json:"source"`
-	SemanticIR          ArtifactIdentity   `json:"semantic_ir"`
-	GeneratedEvaluator  ArtifactIdentity   `json:"generated_evaluator"`
-	ContractDigest      string             `json:"contract_digest"`
-	FixtureCorpusDigest string             `json:"fixture_corpus_digest"`
-	CurrentBindings     BindingSet         `json:"current_bindings"`
-	PriorBindings       BindingSet         `json:"prior_bindings"`
-	CacheHit            bool               `json:"cache_hit"`
-	Reuse               ReuseReport        `json:"reuse"`
-	Operations          []Operation        `json:"operations"`
-	ExecutionCounts     ExecutionCounts    `json:"execution_counts"`
-	Summary             Summary            `json:"summary"`
-	Cells               []CellDecision     `json:"cells"`
-	Inventory           Inventory          `json:"inventory"`
-	Authority           Authority          `json:"authority"`
-	ExternalReleaseInputs []string         `json:"external_release_inputs"`
-	DevelopmentProvenance Provenance       `json:"development_provenance"`
+	SubjectSHA              string            `json:"subject_sha"`
+	Schema                  string            `json:"schema"`
+	Protocol                string            `json:"protocol"`
+	Scenario                string            `json:"scenario"`
+	Decision                Decision          `json:"decision"`
+	Claim                   Claim             `json:"claim"`
+	Source                  SourceIdentity    `json:"source"`
+	SemanticIR              ArtifactIdentity  `json:"semantic_ir"`
+	GeneratedEvaluator      ArtifactIdentity  `json:"generated_evaluator"`
+	ContractDigest          string            `json:"contract_digest"`
+	FixtureCorpusDigest     string            `json:"fixture_corpus_digest"`
+	CurrentBindings         BindingSet        `json:"current_bindings"`
+	PriorBindings           BindingSet        `json:"prior_bindings"`
+	CacheHit                bool              `json:"cache_hit"`
+	Reuse                   ReuseReport       `json:"reuse"`
+	Operations              []Operation       `json:"operations"`
+	ExecutionCounts         ExecutionCounts   `json:"execution_counts"`
+	Summary                 Summary           `json:"summary"`
+	Cells                   []CellDecision    `json:"cells"`
+	Inventory               Inventory         `json:"inventory"`
+	Authority               Authority         `json:"authority"`
+	ExternalReleaseInputs  []string           `json:"external_release_inputs"`
+	DevelopmentProvenance  Provenance         `json:"development_provenance"`
 }
 
 type SourceIdentity struct {
