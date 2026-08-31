@@ -1,0 +1,5 @@
+# CI writes all generated evidence to the runner-owned temporary directory.
+/tmp/
+*.tmp
+*.log
+
