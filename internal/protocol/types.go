@@ -5,9 +5,9 @@ import "encoding/json"
 type Decision string
 
 const (
-	Closed  Decision = "CLOSED"
-	Unknown Decision = "UNKNOWN"
-	Refuted Decision = "REFUTED"
+	Closed          Decision = "CLOSED"
+	UnknownDecision Decision = "UNKNOWN"
+	Refuted         Decision = "REFUTED"
 )
 
 type Unknown struct {

@@ -75,7 +75,7 @@ func evaluateBindingCell(cell Cell, current, prior BindingSet) CellDecision {
 	}
 	for _, check := range checks {
 		if check.current == "" || check.prior == "" {
-			result.State = Unknown
+			result.State = UnknownDecision
 			result.Reason = strings.ToUpper(check.name) + "_MISSING"
 			result.Unknown = unknownForField(cell, result.Reason, check.name)
 			result.BlockedBy = []string{check.name}
@@ -170,7 +170,7 @@ func evaluateReuseCell(cell Cell, decisions []CellDecision, scenario Scenario) C
 		if decision.State == Refuted {
 			refuted = append(refuted, decision.CellID)
 		}
-		if decision.State == Unknown {
+		if decision.State == UnknownDecision {
 			unknown = append(unknown, decision.CellID)
 		}
 	}
@@ -181,14 +181,14 @@ func evaluateReuseCell(cell Cell, decisions []CellDecision, scenario Scenario) C
 		return result
 	}
 	if len(unknown) > 0 {
-		result.State = Unknown
+		result.State = UnknownDecision
 		result.Reason = "REUSE_PLAN_BLOCKED_BY_UNKNOWN_BINDING"
 		result.Unknown = dependencyUnknown(cell, result.Reason, unknown)
 		result.BlockedBy = unknown
 		return result
 	}
 	if !scenario.CacheHit {
-		result.State = Unknown
+		result.State = UnknownDecision
 		result.Reason = "CACHE_MISS_NOT_OBSERVED"
 		result.Unknown = unknownForField(cell, result.Reason, "cache_hit")
 		result.BlockedBy = []string{"cache_hit"}
@@ -202,7 +202,7 @@ func evaluateReuseCell(cell Cell, decisions []CellDecision, scenario Scenario) C
 func evaluateOperationCell(cell Cell, operations []Operation) CellDecision {
 	result := baseCell(cell)
 	if len(operations) != 3 {
-		result.State = Unknown
+		result.State = UnknownDecision
 		result.Reason = "OPERATION_OBSERVATIONS_INCOMPLETE"
 		result.Unknown = unknownForField(cell, result.Reason, "operation_observations")
 		result.BlockedBy = []string{"operation_observations"}
@@ -243,7 +243,7 @@ func evaluateOperationCell(cell Cell, operations []Operation) CellDecision {
 		}
 	}
 	if len(unknownReasons) > 0 {
-		result.State = Unknown
+		result.State = UnknownDecision
 		result.Reason = "EXECUTION_METRIC_OBSERVATION_MISSING"
 		result.Unknown = dependencyUnknown(cell, result.Reason, unknownBlocked)
 		result.BlockedBy = unknownBlocked
@@ -262,8 +262,8 @@ func evaluateReportCell(cell Cell, operationDecision CellDecision) CellDecision 
 		result.BlockedBy = []string{operationDecision.CellID}
 		return result
 	}
-	if operationDecision.State == Unknown {
-		result.State = Unknown
+	if operationDecision.State == UnknownDecision {
+		result.State = UnknownDecision
 		result.Reason = "REPORT_BLOCKED_BY_UNKNOWN_OPERATION_ACCOUNTING"
 		result.Unknown = dependencyUnknown(cell, result.Reason, []string{operationDecision.CellID})
 		result.BlockedBy = []string{operationDecision.CellID}
@@ -310,7 +310,7 @@ func summarize(decisions []CellDecision) Summary {
 		switch decision.State {
 		case Closed:
 			summary.Closed++
-		case Unknown:
+		case UnknownDecision:
 			summary.Unknown++
 		case Refuted:
 			summary.Refuted++
@@ -326,8 +326,8 @@ func aggregateClaim(decisions []CellDecision) (Decision, string, *Unknown) {
 		}
 	}
 	for _, decision := range decisions {
-		if decision.State == Unknown {
-			return Unknown, decision.Reason, decision.Unknown
+		if decision.State == UnknownDecision {
+			return UnknownDecision, decision.Reason, decision.Unknown
 		}
 	}
 	return Closed, "ALL_PROTOCOL_CELLS_CLOSED", nil

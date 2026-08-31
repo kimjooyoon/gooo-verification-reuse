@@ -4,7 +4,7 @@ import "testing"
 
 func TestClaimPrecedence(t *testing.T) {
 	decision, reason, unknown := aggregateClaim([]CellDecision{
-		{CellID: "missing", State: Unknown, Reason: "SOURCE_DIGEST_MISSING", Unknown: &Unknown{Stage: "BINDING"}},
+		{CellID: "missing", State: UnknownDecision, Reason: "SOURCE_DIGEST_MISSING", Unknown: &Unknown{Stage: "BINDING"}},
 		{CellID: "contradiction", State: Refuted, Reason: "POLICY_IDENTITY_MISMATCH"},
 	})
 	if decision != Refuted || reason != "POLICY_IDENTITY_MISMATCH" || unknown != nil {
@@ -14,7 +14,7 @@ func TestClaimPrecedence(t *testing.T) {
 
 func TestMissingBindingHasCausalFrontier(t *testing.T) {
 	decision := evaluateBindingCell(Cell{ID: "POLICY_BINDING", Stage: "BINDING", Step: "COMPARE_POLICY_IDENTITY"}, BindingSet{PolicyIdentity: "sha256:current"}, BindingSet{})
-	if decision.State != Unknown || decision.Unknown == nil {
+	if decision.State != UnknownDecision || decision.Unknown == nil {
 		t.Fatalf("missing policy binding was not UNKNOWN")
 	}
 	if decision.Unknown.UnknownClass != "DIRECT_MISSING" || len(decision.Unknown.BlockedBy) != 1 || decision.Unknown.BlockedBy[0] != "policy_identity" {
