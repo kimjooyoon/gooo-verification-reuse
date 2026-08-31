@@ -47,8 +47,9 @@ jobs:
           if [ -n "$files" ]; then
             echo "$files"
             while IFS= read -r go_file; do
-              gofmt -d "$go_file"
+              gofmt -w "$go_file"
             done <<< "$files"
+            git diff --binary > "$RUNNER_TEMP/gofmt.patch"
             exit 1
           fi
 
@@ -99,3 +100,11 @@ jobs:
         run: |
           echo "artifact_id=${{ steps.evidence.outputs.artifact-id }}" >> "$GITHUB_STEP_SUMMARY"
           echo "artifact_digest=${{ steps.evidence.outputs.artifact-digest }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload CI formatting patch
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gofmt-patch-${{ github.run_id }}
+          path: ${{ runner.temp }}/gofmt.patch
+          if-no-files-found: ignore
