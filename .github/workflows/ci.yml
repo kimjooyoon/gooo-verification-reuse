@@ -44,7 +44,13 @@ jobs:
         run: |
           set -Eeuo pipefail
           files=$(gofmt -l $(git ls-files '*.go'))
-          test -z "$files"
+          if [ -n "$files" ]; then
+            echo "$files"
+            while IFS= read -r go_file; do
+              gofmt -d "$go_file"
+            done <<< "$files"
+            exit 1
+          fi
 
       - name: Verify repository policy files
         shell: bash
