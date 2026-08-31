@@ -51,7 +51,7 @@ func Evaluate(contract Contract, ir SemanticIR, scenario Scenario, sourceDigest,
 			CacheHit: scenario.CacheHit, PlanOnly: scenario.PlanOnly, ActualReused: actualReused, ConsumerTestExecutions: 0,
 		}, Operations: operations, ExecutionCounts: counts, Summary: summary, Cells: decisions, Inventory: inventory,
 		Authority:             Authority{RepositoryWrites: 0, LocalTestExecutions: 0, CrossProjectRequiredGates: 0, OutputLocation: "CALLER_OWNED_TEMP_ONLY", VerificationAuthority: "GITHUB_ACTIONS"},
-		ExternalReleaseInputs: []string{}, DevelopmentProvenance: Provenance{AppendOnly: true, ResetDeleteRewrite: false, FailedAttempts: []string{}, OptionalExternalInputs: []string{}},
+		ExternalReleaseInputs: []string{}, DevelopmentProvenance: Provenance{AppendOnly: true, ResetDeleteRewrite: false, FailedAttempts: []string{}, OptionalExternalInputs: []string{}, DirectMainCommitCount: 1, DirectMainCommitSHA: "33e58f0cad04bc5df5a297e7b9673456568316f9", DirectMainCommitPaths: []string{".gitignore", "LICENSE", "README.md"}},
 	}
 	return receipt, nil
 }
