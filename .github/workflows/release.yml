@@ -20,16 +20,19 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          test "$(git cat-file -t "$GITHUB_REF_NAME")" = "tag"
-          test "$(git rev-parse "$GITHUB_REF_NAME^{commit}")" = "$GITHUB_SHA"
+          tag_object_sha=$(git ls-remote --refs origin "refs/tags/$GITHUB_REF_NAME" | awk 'NR == 1 {print $1}')
+          test -n "$tag_object_sha"
+          test "$(git cat-file -t "$tag_object_sha")" = "tag"
+          test "$(git rev-parse "$tag_object_sha^{commit}")" = "$GITHUB_SHA"
+          echo "tag_object_sha=$tag_object_sha" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build immutable source assets
         id: asset
         shell: bash
         run: |
           set -Eeuo pipefail
-          tag_object_sha=$(git rev-parse "$GITHUB_REF_NAME")
-          commit_sha=$(git rev-parse "$GITHUB_REF_NAME^{commit}")
+          tag_object_sha=$(git ls-remote --refs origin "refs/tags/$GITHUB_REF_NAME" | awk 'NR == 1 {print $1}')
+          commit_sha=$(git rev-parse HEAD)
           archive="gooo-verification-reuse-${GITHUB_REF_NAME}.tar.gz"
           git archive --format=tar.gz --prefix="gooo-verification-reuse-${GITHUB_REF_NAME}/" "$commit_sha" > "$RUNNER_TEMP/$archive"
           asset_digest="sha256:$(sha256sum "$RUNNER_TEMP/$archive" | awk '{print $1}')"
