@@ -83,18 +83,18 @@ func RenderHumanReport(receipt Receipt) string {
 }
 
 type Manifest struct {
-	Schema                 string          `json:"schema"`
-	Protocol               string          `json:"protocol"`
-	Scenario               string          `json:"scenario"`
-	SourceDigest           string          `json:"source_digest"`
-	TreeDigest             string          `json:"tree_digest"`
-	SemanticDigest         string          `json:"semantic_digest"`
-	GeneratedEvaluatorDigest string        `json:"generated_evaluator_digest"`
-	RootReadmeExcluded     bool            `json:"root_readme_excluded"`
-	Files                  []ManifestFile `json:"files"`
-	RepositoryWrites       int             `json:"repository_writes"`
-	LocalTestExecutions    int             `json:"local_test_executions"`
-	CrossProjectRequiredGates int          `json:"cross_project_required_gates"`
+	Schema                    string         `json:"schema"`
+	Protocol                  string         `json:"protocol"`
+	Scenario                  string         `json:"scenario"`
+	SourceDigest              string         `json:"source_digest"`
+	TreeDigest                string         `json:"tree_digest"`
+	SemanticDigest            string         `json:"semantic_digest"`
+	GeneratedEvaluatorDigest  string         `json:"generated_evaluator_digest"`
+	RootReadmeExcluded        bool           `json:"root_readme_excluded"`
+	Files                     []ManifestFile `json:"files"`
+	RepositoryWrites          int            `json:"repository_writes"`
+	LocalTestExecutions       int            `json:"local_test_executions"`
+	CrossProjectRequiredGates int            `json:"cross_project_required_gates"`
 }
 
 type ManifestFile struct {
